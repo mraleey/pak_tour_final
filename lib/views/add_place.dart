@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/place_model.dart';
+import 'home_screen.dart';
 
 class AddPlaceScreen extends StatefulWidget {
   const AddPlaceScreen({Key? key}) : super(key: key);
@@ -48,7 +51,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         }
 
         final place = PlaceModel(
-          id: '',
+          id: Random().nextInt(1000000).toString(),
           name: nameController.text,
           description: descriptionController.text,
           imageUrl: '',
@@ -64,7 +67,17 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         await FirebaseFirestore.instance.collection('places').add(place.toMap());
 
         Get.back();
-        Get.snackbar('Success', 'Place added successfully');
+        Get.snackbar('Success', 'Place added successfully', colorText: Colors.white, backgroundColor: Colors.green);
+        nameController.clear();
+        descriptionController.clear();
+        categoriesController.clear();
+        ratingController.clear();
+        entryFeeController.clear();
+        openingHoursController.clear();
+        latitudeController.clear();
+        longitudeController.clear();
+
+      Get.offAll(() =>  HomeScreen());
       } catch (e) {
         Get.snackbar('Error', 'Failed to add place');
         print('Add place error: $e');

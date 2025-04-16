@@ -71,25 +71,39 @@ class PlaceController extends GetxController {
         return;
       }
 
-      DocumentReference wishlistRef = _firestore
+      final uid = _authController.firebaseUser.value!.uid;
+      final wishlistRef = _firestore
           .collection(AppConstants.wishlistsCollection)
-          .doc(_authController.firebaseUser.value!.uid);
+          .doc(uid);
 
-      await wishlistRef.update({
-        'places': FieldValue.arrayUnion([place.toMap()]),
-        'updatedAt': DateTime.now(),
-      });
+      final docSnapshot = await wishlistRef.get();
+
+      if (docSnapshot.exists) {
+        // Document exists, update it
+        await wishlistRef.update({
+          'places': FieldValue.arrayUnion([place.toMap()]),
+          'updatedAt': DateTime.now(),
+        });
+      } else {
+        // Document doesn't exist, create it
+        await wishlistRef.set({
+          'places': [place.toMap()],
+          'createdAt': DateTime.now(),
+          'updatedAt': DateTime.now(),
+        });
+      }
 
       wishlistPlaces.add(place);
       Get.back();
       UIHelpers.showSuccessSnackBar('Added to wishlist');
     } catch (e) {
       UIHelpers.showErrorSnackBar('Error adding to wishlist');
-      print('Error adding to wishlist: $e');
+      print('Error adding to wishlist: $e ${place.id}');
     } finally {
       isWishlistLoading.value = false;
     }
   }
+
 
   Future<void> removeFromWishlist(PlaceModel place) async {
     if (!_authController.isLoggedIn) return;

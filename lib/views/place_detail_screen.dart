@@ -46,32 +46,34 @@ class PlaceDetailScreen extends StatelessWidget {
   }
 
   Widget _buildAppBar() {
-          final isInWishlist = _placeController.isInWishlist(place.id);
+    final isInWishlist = _placeController.isInWishlist(place.id);
     return SliverAppBar(
       expandedHeight: 250,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         background: Image.asset(
-          "assets/images/islamabad.jpg",
+          "assets/images/logo.png",
           fit: BoxFit.cover,
         ),
       ),
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.black),
+        onPressed: () => Get.back(),
+      ),
       actions: [
-
-           IconButton(
-            icon: Icon(
-              isInWishlist ? Icons.favorite : Icons.favorite_border,
-              color: isInWishlist ? Colors.red : Colors.white,
-            ),
-            onPressed: () {
-              if (isInWishlist) {
-                _placeController.removeFromWishlist(place);
-              } else {
-                _placeController.addToWishlist(place);
-              }
-            },
+        IconButton(
+          icon: Icon(
+            isInWishlist ? Icons.favorite : Icons.favorite_border,
+            color: isInWishlist ? Colors.red : Colors.red,
           ),
-
+          onPressed: () {
+            if (isInWishlist) {
+              _placeController.removeFromWishlist(place);
+            } else {
+              _placeController.addToWishlist(place);
+            }
+          },
+        ),
       ],
     );
   }
@@ -125,32 +127,30 @@ class PlaceDetailScreen extends StatelessWidget {
           }).toList(),
         ),
         SizedBox(height: 8),
-
-           isVisited
-              ? Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: Colors.green),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.check_circle, color: Colors.green, size: 16),
-                SizedBox(width: 4),
-                Text(
-                  'Visited',
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                  ),
+        isVisited
+            ? Container(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: Colors.green),
                 ),
-              ],
-            ),
-          )
-              : SizedBox.shrink(),
-
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.check_circle, color: Colors.green, size: 16),
+                    SizedBox(width: 4),
+                    Text(
+                      'Visited',
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : SizedBox.shrink(),
       ],
     );
   }
@@ -265,51 +265,47 @@ class PlaceDetailScreen extends StatelessWidget {
   }
 
   Widget _buildActionButtons() {
-            final isInWishlist = _placeController.isInWishlist(place.id);
-            final isVisited = place.isVisited;
+    final isInWishlist = _placeController.isInWishlist(place.id);
+    final isVisited = place.isVisited;
 
-      return Column(
-        children: [
-
-             CustomButton(
-              text: isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist',
-              onPressed: () {
-                if (isInWishlist) {
-                  _placeController.removeFromWishlist(place);
-                } else {
-                  _placeController.addToWishlist(place);
-                }
-              },
-              color: isInWishlist ? Colors.red : AppColors.primaryColor,
-              icon: isInWishlist ? Icons.favorite : Icons.favorite_border,
-            ),
-
-          SizedBox(height: 12),
-
-             CustomButton(
-              text: isVisited ? 'Unmark as Visited' : 'Mark as Visited',
-              onPressed: () {
-                if (!isVisited) {
-                  _placeController.markPlaceAsVisited(place);
-                }
-                // Unmark functionality would be added here
-              },
-              color: isVisited ? Colors.grey : Colors.green,
-              icon: isVisited ? Icons.close : Icons.check,
-            ),
-          SizedBox(height: 12),
-          CustomButton(
-            text: 'Ask Assistant About This Place',
-            onPressed: () {
-              _chatController.sendMessage(
-                  'Tell me about ${place.name} in Pakistan');
-              Get.to(() => ChatAssistantScreen());
-            },
-            color: Colors.blue,
-            icon: Icons.chat,
-          ),
-        ],
-      );
-
+    return Column(
+      children: [
+        CustomButton(
+          text: isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist',
+          onPressed: () {
+            if (isInWishlist) {
+              _placeController.removeFromWishlist(place);
+            } else {
+              _placeController.addToWishlist(place);
+            }
+          },
+          color: isInWishlist ? Colors.red : AppColors.primaryColor,
+          icon: isInWishlist ? Icons.favorite : Icons.favorite_border,
+        ),
+        SizedBox(height: 12),
+        CustomButton(
+          text: isVisited ? 'Unmark as Visited' : 'Mark as Visited',
+          onPressed: () {
+            if (!isVisited) {
+              _placeController.markPlaceAsVisited(place);
+            }
+            // Unmark functionality would be added here
+          },
+          color: isVisited ? Colors.grey : Colors.green,
+          icon: isVisited ? Icons.close : Icons.check,
+        ),
+        SizedBox(height: 12),
+        CustomButton(
+          text: 'Ask Assistant About This Place',
+          onPressed: () {
+            _chatController
+                .sendMessage('Tell me about ${place.name} in Pakistan');
+            Get.to(() => ChatAssistantScreen());
+          },
+          color: Colors.blue,
+          icon: Icons.chat,
+        ),
+      ],
+    );
   }
 }
