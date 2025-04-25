@@ -17,6 +17,7 @@ class PlaceController extends GetxController {
   Rx<RoutePlanModel?> currentRoutePlan = Rx<RoutePlanModel?>(null);
   RxBool isLoading = false.obs;
   RxBool isWishlistLoading = false.obs;
+  Rx<String> searchQuery = ''.obs;
 
   @override
   void onInit() {
@@ -72,9 +73,8 @@ class PlaceController extends GetxController {
       }
 
       final uid = _authController.firebaseUser.value!.uid;
-      final wishlistRef = _firestore
-          .collection(AppConstants.wishlistsCollection)
-          .doc(uid);
+      final wishlistRef =
+          _firestore.collection(AppConstants.wishlistsCollection).doc(uid);
 
       final docSnapshot = await wishlistRef.get();
 
@@ -103,7 +103,6 @@ class PlaceController extends GetxController {
       isWishlistLoading.value = false;
     }
   }
-
 
   Future<void> removeFromWishlist(PlaceModel place) async {
     if (!_authController.isLoggedIn) return;

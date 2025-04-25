@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pak_tour_final/utils/app_colors.dart';
 import '../models/user_model.dart';
 import '../app_constants.dart';
 import '../views/home_screen.dart';
@@ -57,10 +58,12 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> signupWithEmailPassword(String name, String email, String password) async {
+  Future<void> signupWithEmailPassword(
+      String name, String email, String password) async {
     try {
       isLoading.value = true;
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -69,7 +72,10 @@ class AuthController extends GetxController {
       await credential.user?.updateDisplayName(name);
 
       // Optional: Save user to Firestore
-      await FirebaseFirestore.instance.collection('users').doc(credential.user!.uid).set({
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(credential.user!.uid)
+          .set({
         'uid': credential.user!.uid,
         'name': name,
         'email': email,
@@ -87,7 +93,6 @@ class AuthController extends GetxController {
       isLoading.value = false;
     }
   }
-
 
   Future<void> login({required String email, required String password}) async {
     try {
@@ -124,4 +129,70 @@ class AuthController extends GetxController {
 
   /// Check if user is logged in
   bool get isLoggedIn => firebaseUser.value != null;
+
+  void resetPassword({required String email}) async {
+    try {
+      final cleanedEmail = email.trim();
+      print("[RESET] Initiated for: $cleanedEmail");
+
+      // Early check for email validation
+      if (cleanedEmail.isEmpty || !GetUtils.isEmail(cleanedEmail)) {
+        print("[RESET] Invalid email: $cleanedEmail");
+        Get.snackbar(
+          'Error',
+          'Please enter a valid email address.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: AppColors.errorColor,
+          colorText: AppColors.surfaceColor,
+        );
+        return; // Exit early if email is invalid
+      }
+
+      isLoading.value = true;
+
+      // Sending password reset email
+      await _auth.sendPasswordResetEmail(email: cleanedEmail);
+
+      isLoading.value = false;
+      print("[RESET] Email sent to: $cleanedEmail");
+
+      Get.snackbar(
+        'Success',
+        'Password reset email sent successfully.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: AppColors.successColor,
+        colorText: AppColors.surfaceColor,
+      );
+    } on FirebaseAuthException catch (e) {
+      isLoading.value = false;
+      print("[RESET] FirebaseAuthException: ${e.code} - ${e.message}");
+
+      // Handle different FirebaseAuthException codes
+      String errorMessage = 'Failed to reset password';
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found for this email.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'The email address is badly formatted.';
+      }
+
+      Get.snackbar(
+        'Error',
+        e.message ?? errorMessage,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: AppColors.errorColor,
+        colorText: AppColors.surfaceColor,
+      );
+    } catch (e) {
+      isLoading.value = false;
+      print("[RESET] General Error: $e");
+
+      Get.snackbar(
+        'Error',
+        'Something went wrong. Please try again later.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: AppColors.errorColor,
+        colorText: AppColors.surfaceColor,
+      );
+    }
+  }
 }

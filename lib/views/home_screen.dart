@@ -21,20 +21,20 @@ class _HomeScreenState extends State<HomeScreen> {
   final AuthController _authController = Get.find<AuthController>();
   final PlaceController _placeController = Get.find<PlaceController>();
   final RouteController _routeController = Get.find<RouteController>();
-  
+
   int _currentIndex = 0;
-  
+
   @override
   void initState() {
     super.initState();
     _placeController.fetchAllPlaces();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
-     return   _placeController.fetchAllPlaces();
+        return _placeController.fetchAllPlaces();
       },
       child: Scaffold(
         appBar: AppBar(
@@ -85,14 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   Widget _getPage(int index) {
     switch (index) {
       case 0:
         return _buildHomeScreen();
       case 1:
         return WishlistScreen();
-        case 2:
+      case 2:
         return AddPlaceScreen();
       case 3:
         return RoutePlannerScreen();
@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return _buildHomeScreen();
     }
   }
-  
+
   Widget _buildHomeScreen() {
     return SingleChildScrollView(
       child: Column(
@@ -119,9 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
-  Widget _buildWelcomeSection() {
 
+  Widget _buildWelcomeSection() {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(20),
@@ -153,7 +152,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SizedBox(height: 20),
           Container(
-
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -172,10 +170,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 border: InputBorder.none,
                 icon: Icon(Icons.search),
               ),
+              onChanged: (value) {
+                _placeController.searchQuery.value =
+                    value; // Update search query on text change
+              },
               onSubmitted: (value) {
                 if (value.isNotEmpty) {
+                  // If needed, navigate to a new screen on search submit
                   final place = _placeController.allPlaces[int.parse(value)];
-                  Get.to(() => PlaceDetailScreen(place: place,));
+                  Get.to(() => PlaceDetailScreen(place: place));
                 }
               },
             ),
@@ -184,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   Widget _buildActivePlanSection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -203,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (_routeController.isLoading.value) {
               return Center(child: CircularProgressIndicator());
             }
-            
+
             if (_routeController.currentRoutePlan.value == null) {
               return Card(
                 child: Padding(
@@ -244,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }
-            
+
             final plan = _routeController.currentRoutePlan.value!;
             return Card(
               child: Padding(
@@ -281,7 +284,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     LinearProgressIndicator(
                       value: plan.completionPercentage / 100,
                       backgroundColor: Colors.grey[200],
-                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
                     ),
                     SizedBox(height: 5),
                     Text(
@@ -313,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   Widget _buildPopularDestinationsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -335,19 +339,26 @@ class _HomeScreenState extends State<HomeScreen> {
             if (_placeController.isLoading.value) {
               return Center(child: CircularProgressIndicator());
             }
-            
+
             if (_placeController.allPlaces.isEmpty) {
               return Center(
                 child: Text('No destinations found'),
               );
             }
-            
-            // Filter to show only top rated places
-            final popularPlaces = _placeController.allPlaces
+
+            // Filter the places based on the search query
+            final searchResults = _placeController.allPlaces
+                .where((place) => place.name
+                    .toLowerCase()
+                    .contains(_placeController.searchQuery.value.toLowerCase()))
+                .toList();
+
+            // Filter to show only top-rated places
+            final popularPlaces = searchResults
                 .where((place) => place.rating >= 4.0)
                 .take(10)
                 .toList();
-            
+
             return ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.symmetric(horizontal: 15),
@@ -370,7 +381,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.grey[300],
                             image: DecorationImage(
-                              image: place.imageUrl == '' ? NetworkImage(place.imageUrl) : AssetImage('assets/images/islamabad.jpg'),
+                              image: place.imageUrl == ''
+                                  ? NetworkImage(place.imageUrl)
+                                  : AssetImage('assets/images/islamabad.jpg'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -410,7 +423,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-  
+
   Widget _buildAllDestinationsSection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -429,19 +442,26 @@ class _HomeScreenState extends State<HomeScreen> {
             if (_placeController.isLoading.value) {
               return Center(child: CircularProgressIndicator());
             }
-            
+
             if (_placeController.allPlaces.isEmpty) {
               return Center(
                 child: Text('No destinations found'),
               );
             }
-            
+
+            // Filter the places based on the search query
+            final searchResults = _placeController.allPlaces
+                .where((place) => place.name
+                    .toLowerCase()
+                    .contains(_placeController.searchQuery.value.toLowerCase()))
+                .toList();
+
             return ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: _placeController.allPlaces.length,
+              itemCount: searchResults.length,
               itemBuilder: (context, index) {
-                final place = _placeController.allPlaces[index];
+                final place = searchResults[index];
                 return PlaceCard(
                   place: place,
                   onTap: () {

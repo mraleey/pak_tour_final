@@ -7,6 +7,7 @@ import '../../utils/ui_helpers.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../../widgets/loading_indicator.dart';
+import 'forgot_password.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -81,7 +82,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 5),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Get.to(() => ForgotPasswordScreen()),
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(color: AppColors.primaryColor),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 5),
                 CustomButton(
                   text: 'Login',
                   onPressed: _handleLogin,
@@ -91,7 +103,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Get.to(() => SignupScreen());
                   },
-
                   child: Text("Register Now"),
                 ),
               ],
@@ -141,5 +152,4 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
-
 }
