@@ -1,0 +1,2 @@
+E:/Work/Personal/Project/pak_tour_final/android/app/.cxx/RelWithDebInfo/4h52486w/x86/CMakeFiles/edit_cache.dir
+E:/Work/Personal/Project/pak_tour_final/android/app/.cxx/RelWithDebInfo/4h52486w/x86/CMakeFiles/rebuild_cache.dir
