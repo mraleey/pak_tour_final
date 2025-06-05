@@ -44,7 +44,7 @@ class SignupScreen extends StatelessWidget {
               children: [
                 SizedBox(height: 20),
                 Text(
-                  'Join Pakistan Tourism',
+                  'Join Trexko Travels',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
