@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Pakistan Tourism',
+                    'Trekxo Travels',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
