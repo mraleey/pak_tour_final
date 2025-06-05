@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pak_tour_final/utils/app_colors.dart';
+import 'package:trekxo_travels/utils/app_colors.dart';
 import '../models/user_model.dart';
 import '../app_constants.dart';
 import '../views/home_screen.dart';

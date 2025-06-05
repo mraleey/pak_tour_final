@@ -1,4 +1,4 @@
-import 'package:pak_tour_final/models/place_model.dart';
+import 'package:trekxo_travels/models/place_model.dart';
 
 class WishlistModel {
   final String id;

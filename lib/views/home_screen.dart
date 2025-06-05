@@ -13,6 +13,8 @@ import 'chat_assistant_screen.dart';
 import 'place_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -38,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Pakistan Tourism'),
+          title: Text('Trekxo Travels'),
           actions: [
             IconButton(
               icon: Icon(Icons.logout),
@@ -56,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               _currentIndex = index;
             });
           },
-          selectedItemColor: AppColors.primaryColor,
+          selectedItemColor: Colors.black,
           unselectedItemColor: Colors.grey,
           type: BottomNavigationBarType.fixed,
           items: [
@@ -139,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
           SizedBox(height: 10),
@@ -147,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
             'Discover the beauty of Pakistan',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.black.withOpacity(0.8),
             ),
           ),
           SizedBox(height: 20),
@@ -238,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryColor,
-                          foregroundColor: Colors.white,
+                          foregroundColor: Colors.black,
                         ),
                         child: Text('Create Route Plan'),
                       ),

@@ -10,6 +10,7 @@ import 'controllers/chat_controller.dart';
 import 'firebase_options.dart';
 import 'views/splash_screen.dart';
 import 'utils/app_colors.dart';
+import 'utils/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,29 +37,9 @@ class MyApp extends StatelessWidget {
     Get.put(ChatController(), permanent: true);
 
     return GetMaterialApp(
-      title: 'Pakistan Tourism',
+      title: 'Trekxo Travels',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: AppColors.primaryColor,
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          secondary: AppColors.accentColor,
-          surface: AppColors.backgroundColor,
-        ),
-        fontFamily: 'Poppins',
-        scaffoldBackgroundColor: AppColors.backgroundColor,
-        appBarTheme: AppBarTheme(
-          backgroundColor: AppColors.primaryColor,
-          elevation: 0,
-          centerTitle: true,
-          titleTextStyle: const TextStyle(
-            fontFamily: 'Poppins',
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-          iconTheme: const IconThemeData(color: Colors.white),
-        ),
-      ),
+      theme: AppTheme.lightTheme,
       home: SplashScreen(),
     );
   }

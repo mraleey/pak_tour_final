@@ -118,7 +118,7 @@ class PlaceDetailScreen extends StatelessWidget {
             return Chip(
               label: Text(
                 category,
-                style: TextStyle(fontSize: 12, color: Colors.white),
+                style: TextStyle(fontSize: 12, color: Colors.black),
               ),
               backgroundColor: AppColors.primaryColor,
               padding: EdgeInsets.zero,

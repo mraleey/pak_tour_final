@@ -1,0 +1,2 @@
+D:/Ali/pak_tour_final/android/app/.cxx/Debug/6j6x3e5e/x86_64/CMakeFiles/edit_cache.dir
+D:/Ali/pak_tour_final/android/app/.cxx/Debug/6j6x3e5e/x86_64/CMakeFiles/rebuild_cache.dir

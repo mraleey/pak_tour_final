@@ -14,22 +14,23 @@ class RoutePlannerScreen extends StatefulWidget {
   _RoutePlannerScreenState createState() => _RoutePlannerScreenState();
 }
 
-class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTickerProviderStateMixin {
+class _RoutePlannerScreenState extends State<RoutePlannerScreen>
+    with SingleTickerProviderStateMixin {
   final RouteController _routeController = Get.find<RouteController>();
   late TabController _tabController;
-  
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
-  
+
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +50,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       ),
     );
   }
-  
+
   Widget _buildTabBar() {
     return Container(
       color: AppColors.primaryColor,
@@ -63,35 +64,35 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       ),
     );
   }
-  
+
   Widget _buildActiveRouteTab() {
     return Obx(() {
       if (_routeController.isLoading.value) {
         return LoadingIndicator();
       }
-      
+
       if (_routeController.isGeneratingRoute.value) {
         return _buildGeneratingRoute();
       }
-      
+
       if (_routeController.currentRoutePlan.value == null) {
         return _buildNoActiveRoute();
       }
-      
+
       return _buildRouteDetails(_routeController.currentRoutePlan.value!);
     });
   }
-  
+
   Widget _buildAllRoutesTab() {
     return Obx(() {
       if (_routeController.isLoading.value) {
         return LoadingIndicator();
       }
-      
+
       if (_routeController.routePlans.isEmpty) {
         return _buildNoRoutes();
       }
-      
+
       return ListView.builder(
         padding: EdgeInsets.all(16),
         itemCount: _routeController.routePlans.length,
@@ -102,7 +103,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       );
     });
   }
-  
+
   Widget _buildNoActiveRoute() {
     return Center(
       child: Column(
@@ -139,12 +140,13 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
               Get.back();
               Get.find<RouteController>();
             },
+            textColor: Colors.black,
           ),
         ],
       ),
     );
   }
-  
+
   Widget _buildNoRoutes() {
     return Center(
       child: Column(
@@ -177,7 +179,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       ),
     );
   }
-  
+
   Widget _buildGeneratingRoute() {
     return Center(
       child: Column(
@@ -194,17 +196,17 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
           ),
           SizedBox(height: 10),
           Obx(() => Text(
-            _routeController.generationStatus.value,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
-          )),
+                _routeController.generationStatus.value,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              )),
         ],
       ),
     );
   }
-  
+
   Widget _buildRouteCard(RoutePlanModel routePlan) {
     return Card(
       margin: EdgeInsets.only(bottom: 16),
@@ -321,7 +323,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       ),
     );
   }
-  
+
   Widget _buildRouteDetails(RoutePlanModel routePlan) {
     return Column(
       children: [
@@ -360,7 +362,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       ],
     );
   }
-  
+
   Widget _buildRouteMap(RoutePlanModel routePlan) {
     // Would use Google Maps here to display the route
     return Container(
@@ -377,7 +379,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       ),
     );
   }
-  
+
   Widget _buildRouteStats(RoutePlanModel routePlan) {
     return Row(
       children: [
@@ -385,7 +387,8 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
           child: _buildStatCard(
             icon: Icons.access_time,
             title: 'Duration',
-            value: '${(routePlan.totalTimeMinutes / 60).toStringAsFixed(1)} hrs',
+            value:
+                '${(routePlan.totalTimeMinutes / 60).toStringAsFixed(1)} hrs',
           ),
         ),
         SizedBox(width: 16),
@@ -407,7 +410,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       ],
     );
   }
-  
+
   Widget _buildStatCard({
     required IconData icon,
     required String title,
@@ -449,7 +452,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       ),
     );
   }
-  
+
   Widget _buildAIRecommendation(RoutePlanModel routePlan) {
     return Container(
       padding: EdgeInsets.all(16),
@@ -491,7 +494,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       ),
     );
   }
-  
+
   Widget _buildStepsList(RoutePlanModel routePlan) {
     return ListView.builder(
       shrinkWrap: true,
@@ -500,7 +503,7 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
       itemBuilder: (context, index) {
         final step = routePlan.steps[index];
         final isLastStep = index == routePlan.steps.length - 1;
-        
+
         return InkWell(
           onTap: () {
             Get.to(() => PlaceDetailScreen(place: step.place));
@@ -720,14 +723,15 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
                             ),
                             child: Center(
                               child: step.place.isVisited
-                                  ? Icon(Icons.check, color: Colors.white, size: 16)
+                                  ? Icon(Icons.check,
+                                      color: Colors.white, size: 16)
                                   : Text(
-                                '${step.order}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                                      '${step.order}',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                             ),
                           ),
                           title: Text(
@@ -740,12 +744,12 @@ class _RoutePlannerScreenState extends State<RoutePlannerScreen> with SingleTick
                           ),
                           trailing: index > 0
                               ? Text(
-                            '${step.distanceKm.toStringAsFixed(1)} km',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
-                          )
+                                  '${step.distanceKm.toStringAsFixed(1)} km',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                  ),
+                                )
                               : null,
                         );
                       },

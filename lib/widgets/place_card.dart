@@ -10,7 +10,7 @@ class PlaceCard extends StatelessWidget {
   final bool isInWishlist;
   final bool showVisitedStatus;
   final Function(bool)? onVisitedChanged;
-  
+
   const PlaceCard({
     Key? key,
     required this.place,
@@ -20,7 +20,7 @@ class PlaceCard extends StatelessWidget {
     this.showVisitedStatus = false,
     this.onVisitedChanged,
   }) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -42,7 +42,7 @@ class PlaceCard extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildImageSection() {
     return Stack(
       children: [
@@ -126,7 +126,7 @@ class PlaceCard extends StatelessWidget {
       ],
     );
   }
-  
+
   Widget _buildInfoSection() {
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -206,14 +206,14 @@ class PlaceCard extends StatelessWidget {
               return Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor.withOpacity(0.1),
+                  color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   category,
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.primaryColor,
+                    color: Colors.black,
                   ),
                 ),
               );

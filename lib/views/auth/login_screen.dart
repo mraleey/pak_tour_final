@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../controllers/auth_controller.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/ui_helpers.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_textfield.dart';
 import '../../widgets/loading_indicator.dart';
@@ -11,6 +10,8 @@ import 'forgot_password.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }

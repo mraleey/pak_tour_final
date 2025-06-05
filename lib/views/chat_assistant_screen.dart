@@ -10,7 +10,7 @@ import '../widgets/loading_indicator.dart';
 class ChatAssistantScreen extends StatelessWidget {
   final ChatController _chatController = Get.find<ChatController>();
   final ScrollController _scrollController = ScrollController();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,11 +22,11 @@ class ChatAssistantScreen extends StatelessWidget {
               if (_chatController.isLoading.value) {
                 return LoadingIndicator();
               }
-              
+
               if (_chatController.messages.isEmpty) {
                 return _buildEmptyChat();
               }
-              
+
               return _buildChatList();
             }),
           ),
@@ -35,7 +35,7 @@ class ChatAssistantScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildHeader() {
     return Container(
       padding: EdgeInsets.all(16),
@@ -57,11 +57,11 @@ class ChatAssistantScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Pakistan Tourism Assistant',
+                      'Trekxo Travels Assistant',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     SizedBox(height: 2),
@@ -69,14 +69,14 @@ class ChatAssistantScreen extends StatelessWidget {
                       'Powered by LLaMA',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.black.withOpacity(0.8),
                       ),
                     ),
                   ],
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.delete_outline, color: Colors.white),
+                icon: Icon(Icons.delete_outline, color: Colors.black),
                 onPressed: () {
                   _showClearChatConfirmation();
                 },
@@ -88,7 +88,7 @@ class ChatAssistantScreen extends StatelessWidget {
             'Ask me anything about Pakistani tourism, destinations, and travel tips!',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.black.withOpacity(0.9),
             ),
             textAlign: TextAlign.center,
           ),
@@ -96,7 +96,7 @@ class ChatAssistantScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildEmptyChat() {
     return Center(
       child: Column(
@@ -129,7 +129,7 @@ class ChatAssistantScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildChatList() {
     // Scroll to bottom after rendering
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -141,7 +141,7 @@ class ChatAssistantScreen extends StatelessWidget {
         );
       }
     });
-    
+
     return ListView.builder(
       controller: _scrollController,
       padding: EdgeInsets.all(16),
@@ -156,7 +156,7 @@ class ChatAssistantScreen extends StatelessWidget {
       },
     );
   }
-  
+
   Widget _buildInputArea() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -214,7 +214,9 @@ class ChatAssistantScreen extends StatelessWidget {
                   )
                 : InkWell(
                     onTap: () {
-                      if (_chatController.textController.text.trim().isNotEmpty) {
+                      if (_chatController.textController.text
+                          .trim()
+                          .isNotEmpty) {
                         _chatController.sendMessage(
                           _chatController.textController.text,
                         );
@@ -238,7 +240,7 @@ class ChatAssistantScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   void _showClearChatConfirmation() {
     Get.dialog(
       AlertDialog(

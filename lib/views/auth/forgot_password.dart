@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pak_tour_final/views/auth/login_screen.dart';
+import 'package:trekxo_travels/views/auth/login_screen.dart';
 import '../../controllers/auth_controller.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_button.dart';
